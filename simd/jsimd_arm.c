@@ -93,7 +93,7 @@ init_simd (void)
 {
   char *env = NULL;
 
-  if (simd_support != ~0)
+  if (simd_support != ~0U)
     return;
 
   simd_support = 0;
@@ -318,6 +318,9 @@ jsimd_h2v1_fancy_upsample (j_decompress_ptr cinfo,
                            JSAMPARRAY input_data,
                            JSAMPARRAY * output_data_ptr)
 {
+  if (simd_support & JSIMD_ARM_NEON)
+    jsimd_h2v1_fancy_upsample_neon(cinfo->max_v_samp_factor,
+        compptr->downsampled_width, input_data, output_data_ptr);
 }
 
 GLOBAL(int)
